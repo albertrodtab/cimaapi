@@ -14,3 +14,21 @@ Otras funcionalidades (1 pto cada una)
 ● Crea, utilizando WebFlux, un pequeño servicio web relacionado con la API seleccionada y consúmelo desde alguna zona de la aplicación JavaFX utilizando WebClient.
 ● Utiliza correctamente la clase ObservableList de JavaFX para la visualización de los contenidos en los diferentes controles de JavaFX que decidas utilizar (ComboBox, TableView, ListView, . . .).
 ● Realizar el seguimiento del proyecto utilizando la plataforma GitHub para almacenar el código y gestionando las issues (bug, mejoras, . . .) a medida que se vaya trabajando en él.
+
+
+        Configurar la carpeta donde guardo mis certificados
+        para ello debo acceder a la APi de CIMA, en la barra de direcciones del navegador pulsar sobre el candado
+        https://cima.aemps.es/cima/rest/medicamento?nregistro=51347
+        ver las propiedades del certificado y exportarlo en mi equipo.
+        luego configuro un almacen de certificado "TrustStore", y agrego el certificado descargado desde CMD con el comando 
+        keytool -import -alias cima -file certificado.crt -keystore miTruststore
+        uso para crearlo la herramienta de java keytool.
+        Finalmento configuro el truststore en mi aplicación, para ello implemento estas 2 lineas de código.
+        Tambien se podría configurar esta propiedad en le archivo de propiedades del sitema "java.security", yo he decidido 
+        implemntarlo mediante código como se ve a continuación.
+        
+
+        // con esto le digo donde está ubicado mi truststore y la clave para poder acceder y consultar los certificados.
+
+        System.setProperty("javax.net.ssl.trustStore", "C:\\certf\\miTruststore");
+        System.setProperty("javax.net.ssl.trustStorePassword", "LeeHTY59.");
