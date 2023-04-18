@@ -3,6 +3,8 @@ D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\model\Psuministro.java
 D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\App.java
 D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\controller\AppController.java
 D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\service\CimaApiService.java
+D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\task\PSuministroTask.java
+D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\model\Presentaciones.java
 D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\service\CimaApi.java
 D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\util\R.java
 D:\DAM 22_23\PSP\cimaapi\src\main\java\com\alberto\model\Medicamento.java

@@ -1,7 +1,5 @@
 package com.alberto.model;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Medicamento {
-    
-    String nregistro;
+public class Presentaciones {
+
+    String cn;
     String nombre;
-    String pactivos;
-    String labtitular;
-    //List<Presentaciones> presentaciones;
+    boolean comerc;
+    boolean psum;
+
+    
+
+    
 }
