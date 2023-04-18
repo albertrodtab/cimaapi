@@ -2,11 +2,12 @@ package com.alberto;
 
 import com.alberto.controller.AppController;
 import com.alberto.model.Medicamento;
-import com.alberto.model.Psuministro;
-import com.alberto.service.CimaApiService;
+//import com.alberto.model.Medicamento;
+//import com.alberto.model.Psuministro;
+//import com.alberto.service.CimaApiService;
 import com.alberto.util.R;
 
-import io.reactivex.functions.Consumer;
+//import io.reactivex.functions.Consumer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -71,8 +72,8 @@ public class App extends Application{
             ScrollPane mainPane = loader.load();
             Scene scene = new Scene(mainPane);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Dictionary PSP");
-            primaryStage.show();
+            primaryStage.setTitle("CimaAPI PSP");
+            primaryStage.show();       
         }
 
         @Override
@@ -97,7 +98,6 @@ public class App extends Application{
         System.setProperty("javax.net.ssl.trustStore", "C:\\certf\\miTruststore");
         System.setProperty("javax.net.ssl.trustStorePassword", "LeeHTY59.");
 
-        
                 launch();
         }
       

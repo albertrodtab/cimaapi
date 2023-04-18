@@ -1,4 +1,6 @@
 com\alberto\controller\AppController.class
+com\alberto\model\Presentaciones.class
+com\alberto\task\PSuministroTask.class
 com\alberto\service\CimaApiService.class
 com\alberto\App.class
 com\alberto\service\CimaApi.class
