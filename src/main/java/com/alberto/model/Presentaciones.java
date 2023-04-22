@@ -1,5 +1,7 @@
 package com.alberto.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Presentaciones {
 
-    String cn;
-    String nombre;
-    boolean comerc;
-    boolean psum;
+    int totalFilas;
+    int pagina;
+    int tamanioPagina;
+    List<Medicamento> resultados;
 
     
 
