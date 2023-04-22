@@ -1,6 +1,7 @@
 package com.alberto.service;
 
 import com.alberto.model.Medicamento;
+import com.alberto.model.Presentaciones;
 import com.alberto.model.Psuministro;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,6 +48,13 @@ public class CimaApiService {
 
     public Observable<Psuministro> getPsuministro(String nregistro){
         return this.cimaApi.getPsuministro(nregistro).map(psuministro ->{
+            
+            return psuministro;
+        });
+    }
+
+    public Observable<Presentaciones> getPresentaciones(String nregistro){
+        return this.cimaApi.getPresentaciones(nregistro).map(psuministro ->{
             
             return psuministro;
         });

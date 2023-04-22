@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Psuministro {
 
-    String totalFilas;
-    String pagina;
-    String tamanioPagina;
+    int totalFilas;
+    int pagina;
+    int tamanioPagina;
     List<Medicamento> resultados;
     
 }
