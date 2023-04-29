@@ -17,7 +17,29 @@ import javafx.stage.Stage;
 
 public class App extends Application{
 
-/*      public static void main( String[] args ){ 
+        public static void main(String[] args) {
+
+                /* tras configurar la carpeta donde guardo mis certificados
+                * para ello debo acceder a la APi de CIMA, en la barra de direcciones pulsar sobre el candado
+                * ver las propiedades del certificado y exportarlo en mi equipo.
+                * luego configuro un almacen de certificado "TrustStore", y agrego el certificado descargado desde CMD con el comando 
+                * keytool -import -alias cima -file certificado.crt -keystore miTruststore
+                * uso para crearlo la herramienta de java keytool.
+                * Finalmento configuro el truststore en mi aplicación, para ello implmento estas 2 lineas de código.
+                * Tambien se podría configurar esta propiedad en le archivo de propiedades del sitema "java.security", yo he decidido 
+                * implemntarlo mediante código como se ve a continuación.
+                */
+        
+                // con esto le digo donde está ubicado mi truststore y la clave para poder acceder y consultar los certificados.
+                System.setProperty("javax.net.ssl.trustStore", "C:\\certf\\miTruststore");
+                System.setProperty("javax.net.ssl.trustStorePassword", "LeeHTY59.");
+        
+                        launch();
+                }
+
+/*      esto ejecutaria una version simplificada de consulta de la APi desde la consolas
+
+public static void main( String[] args ){ 
 
         /* tras configurar la carpeta donde guardo mis certificados
         * para ello debo acceder a la APi de CIMA, en la barra de direcciones pulsar sobre el candado
@@ -80,26 +102,6 @@ public class App extends Application{
         public void stop() throws Exception{
             super.stop();
         };
-
-        public static void main(String[] args) {
-
-        /* tras configurar la carpeta donde guardo mis certificados
-        * para ello debo acceder a la APi de CIMA, en la barra de direcciones pulsar sobre el candado
-        * ver las propiedades del certificado y exportarlo en mi equipo.
-        * luego configuro un almacen de certificado "TrustStore", y agrego el certificado descargado desde CMD con el comando 
-        * keytool -import -alias cima -file certificado.crt -keystore miTruststore
-        * uso para crearlo la herramienta de java keytool.
-        * Finalmento configuro el truststore en mi aplicación, para ello implmento estas 2 lineas de código.
-        * Tambien se podría configurar esta propiedad en le archivo de propiedades del sitema "java.security", yo he decidido 
-        * implemntarlo mediante código como se ve a continuación.
-        */
-
-        // con esto le digo donde está ubicado mi truststore y la clave para poder acceder y consultar los certificados.
-        System.setProperty("javax.net.ssl.trustStore", "C:\\certf\\miTruststore");
-        System.setProperty("javax.net.ssl.trustStorePassword", "LeeHTY59.");
-
-                launch();
-        }
       
 } 
 

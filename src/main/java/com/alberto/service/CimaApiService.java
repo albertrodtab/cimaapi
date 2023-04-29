@@ -1,10 +1,6 @@
 package com.alberto.service;
 
-import java.util.List;
-
 import com.alberto.model.Medicamento;
-import com.alberto.model.Presentaciones;
-import com.alberto.model.Psuministro;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

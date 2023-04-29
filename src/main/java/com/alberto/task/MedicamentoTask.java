@@ -11,7 +11,7 @@ import javafx.concurrent.Task;
 public class MedicamentoTask extends Task<Integer>{
 
     private String requestedMedicamento;
-    private Consumer<Medicamento> user;
+    //private Consumer<Medicamento> user;
     private ObservableList<Medicamento> results;
 
     public MedicamentoTask(String requestedMedicamento, ObservableList<Medicamento> results){

@@ -123,8 +123,6 @@ public class MedicamentosController {
         // Si se ha seleccionado un registro, lo eliminamos
         if (index >= 0) {
             results.remove(index);
-            deleteInput.clear();
-            deleteInput.requestFocus();
         }
     }
 
@@ -136,7 +134,7 @@ public class MedicamentosController {
     @FXML
     public void exportCSV(ActionEvent event) {
         File outputFile = new File(System.getProperty("user.dir") + System.getProperty("file.separator")
-                + this.requestedMedicamento + "_medicamentos.csv");
+                + this.requestedMedicamento + "_medicamento.csv");
         
         try {
             FileWriter writer = new FileWriter(outputFile);
