@@ -1,27 +1,25 @@
 package com.alberto.task;
 
 import com.alberto.model.Medicamento;
-import com.alberto.model.Presentaciones;
 import com.alberto.service.CimaApiService;
 
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.control.ProgressIndicator;
+
 
 public class PresentacionesTask extends Task<Integer>{
 
     private String requestedMedicamento;
-    private Consumer<Presentaciones> user;
+    //private Consumer<Presentaciones> user;
     private ObservableList<Medicamento> results;
-    private ProgressIndicator progressIndicator;
+    private int counter;
 
-    public PresentacionesTask(String requestedMedicamento, ObservableList<Medicamento> results, ProgressIndicator progressIndicator){
+    public PresentacionesTask(String requestedMedicamento, ObservableList<Medicamento> results){
         this.requestedMedicamento = requestedMedicamento;
         this.results = results;
-        this.progressIndicator = progressIndicator;
+        this.counter = 0;
     }
 
     @Override
@@ -29,22 +27,16 @@ public class PresentacionesTask extends Task<Integer>{
         CimaApiService cimaApiService = new CimaApiService();
 
         Consumer<Medicamento> user = (medicamento) -> {
+            this.counter++;
+            Thread.sleep(250);
+            updateMessage(String.valueOf(this.counter) + " medicamentos descargados");
             Platform.runLater(()->this.results.add(medicamento));
-            Thread.sleep(1000);
-            ProgressIndicator progressIndicator = new ProgressIndicator();
-            DoubleProperty progressProperty = progressIndicator.progressProperty();
-            progressProperty.set(0.5);
-            
+            //Thread.sleep(1000);
         };
         cimaApiService.getPresentaciones(requestedMedicamento).subscribe(user, throwable -> {
             // Maneja la excepción aquí
             throwable.printStackTrace();
         });
-        // actualiza el valor del progress indicator durante la operación
-        for (int i = 0; i < 100; i++) {
-            updateProgress(i, 100);
-            Thread.sleep(10); // simulando una operación larga
-        }
        /*  cimaApiService.getPresentaciones(requestedMedicamento).subscribe(user, throwable -> {
             // Maneja la excepción aquí
             throwable.printStackTrace();

@@ -3,26 +3,27 @@ package com.alberto.task;
 import java.util.concurrent.TimeUnit;
 
 import com.alberto.model.Medicamento;
-import com.alberto.model.Psuministro;
 import com.alberto.service.CimaApiService;
 
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.control.ProgressIndicator;
+
 
 public class PSuministroTask extends Task<Integer>{
 
     private String requestedMedicamento;
-    private Consumer<Psuministro> user;
+    //private Consumer<Psuministro> user;
     private ObservableList<Medicamento> results;
-    private ProgressIndicator progressIndicator;
+    private int counter;
+    
 
-    public PSuministroTask(String requestedMedicamento, ObservableList<Medicamento> results, ProgressIndicator progressIndicator){
+    public PSuministroTask(String requestedMedicamento, ObservableList<Medicamento> results){
         this.requestedMedicamento = requestedMedicamento;
         this.results = results;
-        this.progressIndicator = progressIndicator;
+        this.counter = 0;
+        
     }
 
     @Override
@@ -30,16 +31,12 @@ public class PSuministroTask extends Task<Integer>{
         CimaApiService cimaApiService = new CimaApiService();
 
         Consumer<Medicamento> user = (medicamento) -> {
+            this.counter++;
+            Thread.sleep(250);
+            updateMessage(String.valueOf(this.counter) + " medicamentos descargados");
             Platform.runLater(()->this.results.add(medicamento));
-            Thread.sleep(1000);
-            updateProgress(1, 1); //actualiza el valor del progreso de la tarea
             };
-                
-        // actualiza el valor del progress indicator durante la operación
-        for (int i = 0; i < 100; i++) {
-            updateProgress(i, 100);
-            Thread.sleep(10); // simulando una operación larga
-        }
+
         cimaApiService.getPsuministro(requestedMedicamento)
         .timeout(30, TimeUnit.SECONDS)
         .subscribe(user, Throwable -> {

@@ -5,10 +5,12 @@ import com.alberto.util.R;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.VBox;
 
@@ -32,6 +34,11 @@ public class AppController {
     public void searchMedicamento(ActionEvent event) {
         //medicamentos.clear();
         String requestedMedicamento = medicamentoInput.getText();
+        if (requestedMedicamento.trim().isEmpty()) {
+            Alert alert = new Alert(AlertType.WARNING, "Debe introducir un número de registro");
+            alert.showAndWait();
+            return;
+            }
         this.lastSearch = requestedMedicamento;
         medicamentoInput.clear();
         medicamentoInput.requestFocus();

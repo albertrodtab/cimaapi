@@ -1,7 +1,5 @@
 package com.alberto.model;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +16,9 @@ public class Medicamento {
     String cn;
     String observ;
     //List<Presentaciones> presentaciones;
+    public void setAnotaciones(String newValue) {
+    }
+    public String getAnotaciones() {
+        return null;
+    }
 }
