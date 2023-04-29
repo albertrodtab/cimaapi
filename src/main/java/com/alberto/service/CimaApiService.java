@@ -1,5 +1,7 @@
 package com.alberto.service;
 
+import java.util.List;
+
 import com.alberto.model.Medicamento;
 import com.alberto.model.Presentaciones;
 import com.alberto.model.Psuministro;
@@ -46,18 +48,16 @@ public class CimaApiService {
         });
     }
 
-    public Observable<Psuministro> getPsuministro(String nregistro){
-        return this.cimaApi.getPsuministro(nregistro).map(psuministro ->{
+    public Observable<Medicamento> getPsuministro(String nregistro){
+        return this.cimaApi.getPsuministro(nregistro).map(psuministro -> psuministro.getResultados())
+        .flatMapIterable(resultados -> resultados);
+               
             
-            return psuministro;
-        });
-    }
+        };
 
-    public Observable<Presentaciones> getPresentaciones(String nregistro){
-        return this.cimaApi.getPresentaciones(nregistro).map(psuministro ->{
-            
-            return psuministro;
-        });
+    public Observable<Medicamento> getPresentaciones(String nregistro){
+        return this.cimaApi.getPresentaciones(nregistro).map(presentaciones -> presentaciones.getResultados())
+        .flatMapIterable(resultados -> resultados);
     }
 
     

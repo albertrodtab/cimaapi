@@ -27,6 +27,7 @@ public class AppController {
     private String lastSearch;
 
 
+
     @FXML
     public void searchMedicamento(ActionEvent event) {
         //medicamentos.clear();
@@ -43,7 +44,13 @@ public class AppController {
         try{
             VBox vBox = loader.load();
             tpMedicamento.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
-            tpMedicamento.getTabs().add(new Tab(requestedMedicamento, vBox));
+            //tpMedicamento.getTabs().add(new Tab(requestedMedicamento, vBox));
+            int index = tpMedicamento.getTabs().size() +1;
+            String title = "Medicamento " + index + ": " + requestedMedicamento;
+            tpMedicamento.getTabs().add(new Tab(title, vBox));
+
+            // Selecciona automáticamente la nueva pestaña
+            tpMedicamento.getSelectionModel().selectLast();
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -66,7 +73,13 @@ public class AppController {
         try{
             VBox vBox = loader.load();
             tpMedicamento.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
-            tpMedicamento.getTabs().add(new Tab(requestedMedicamento, vBox));
+            //tpMedicamento.getTabs().add(new Tab(requestedMedicamento, vBox));
+            int index = tpMedicamento.getTabs().size() +1;
+            String title = "PSuministro " + index + ": " + requestedMedicamento;
+            tpMedicamento.getTabs().add(new Tab(title, vBox));
+
+            // Selecciona automáticamente la nueva pestaña
+            tpMedicamento.getSelectionModel().selectLast();
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -89,7 +102,13 @@ public class AppController {
         try{
             VBox vBox = loader.load();
             tpMedicamento.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
-            tpMedicamento.getTabs().add(new Tab(requestedMedicamento, vBox));
+            //tpMedicamento.getTabs().add(new Tab(requestedMedicamento, vBox));
+            int index = tpMedicamento.getTabs().size() +1;
+            String title = "Presentaciones " + index + ": " + requestedMedicamento;
+            tpMedicamento.getTabs().add(new Tab(title, vBox));
+
+            // Selecciona automáticamente la nueva pestaña
+            tpMedicamento.getSelectionModel().selectLast();
         }catch(IOException e){
             e.printStackTrace();
         }
