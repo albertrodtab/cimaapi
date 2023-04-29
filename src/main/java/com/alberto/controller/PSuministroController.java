@@ -17,6 +17,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -42,6 +44,12 @@ public class PSuministroController {
     private ObservableList<Medicamento> results;
 
     private PSuministroTask psuministroTask;
+    
+    @FXML
+    private ProgressIndicator progressIndicator;
+
+    //@FXML
+    // ListView<Medicamento> medicamentosListView;
    
     
     
@@ -54,10 +62,10 @@ public class PSuministroController {
     public void initialize() {
        
         TableColumn<Medicamento, Integer> nroFila = new TableColumn<>("#");
-        TableColumn<Medicamento, String> nregistro = new TableColumn<>("Nº Registro");
+        TableColumn<Medicamento, String> cn = new TableColumn<>("Cod Nacional");
         TableColumn<Medicamento, String> nombre = new TableColumn<>("Nombre");
-        TableColumn<Medicamento, String> pactivos = new TableColumn<>("P. Activos");
-        TableColumn<Medicamento, String> labtitular = new TableColumn<>("Lab. Titular");
+        TableColumn<Medicamento, String> observ = new TableColumn<>("Observaciones");
+        //TableColumn<Medicamento, String> labtitular = new TableColumn<>("Lab. Titular");
         //TableColumn<Medicamento, TableView<Presentaciones>> presentaciones = new TableColumn<>("Presentaciones");
 
         // Configurar la fábrica de celdas personalizada para la columna de número de fila
@@ -77,9 +85,9 @@ public class PSuministroController {
         });
         
         nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        nregistro.setCellValueFactory(new PropertyValueFactory<>("nregistro"));
-        pactivos.setCellValueFactory(new PropertyValueFactory<>("pactivos"));
-        labtitular.setCellValueFactory(new PropertyValueFactory<>("labtitular"));
+        cn.setCellValueFactory(new PropertyValueFactory<>("cn"));
+        observ.setCellValueFactory(new PropertyValueFactory<>("Observ"));
+        //labtitular.setCellValueFactory(new PropertyValueFactory<>("labtitular"));
 
         /*// Crear una celda personalizada para la columna "Presentaciones" que muestre el TableView de presentaciones.
         presentaciones.setCellFactory(column -> new TableCell<>() {
@@ -107,10 +115,13 @@ public class PSuministroController {
         return new SimpleObjectProperty<>(presentacionesTableView);
     }); */
         
-        medicamentosTabla.getColumns().addAll(nroFila, nombre, nregistro, pactivos, labtitular /*presentaciones*/);
+        medicamentosTabla.getColumns().addAll(nroFila, nombre, cn, observ /*presentaciones*/);
         this.medicamentosTabla.setItems(this.results);
 
-        this.psuministroTask = new PSuministroTask(requestedMedicamento, this.results);
+        //medicamentosListView.setItems(results);
+
+        this.psuministroTask = new PSuministroTask(requestedMedicamento, this.results, progressIndicator);
+        progressIndicator.progressProperty().bind(psuministroTask.progressProperty()); // vincula el progress indicator con el task
         new Thread(psuministroTask).start();
     }
 

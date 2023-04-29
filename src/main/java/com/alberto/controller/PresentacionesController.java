@@ -10,17 +10,24 @@ import com.alberto.model.Medicamento;
 import com.alberto.task.PresentacionesTask;
 import com.opencsv.CSVWriter;
 
-
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Labeled;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 public class PresentacionesController {
     
@@ -41,7 +48,22 @@ public class PresentacionesController {
     private ObservableList<Medicamento> results;
 
     private PresentacionesTask psuministroTask;
-   
+
+//@FXML
+   // private ListView<Medicamento> medicamentosListView;
+    
+   @FXML
+    private ProgressIndicator progressIndicator;
+
+            
+    @FXML
+    private TextField searchField;
+
+    private final int itemsPerPage = 10;
+
+    @FXML
+    private Pagination pagination;
+    
     
     
     public PresentacionesController(String requestedMedicamento){
@@ -49,9 +71,40 @@ public class PresentacionesController {
         this.results = FXCollections.observableArrayList();
     }
 
+    public Node createPage(int pageIndex) {
+        
+        // Calcular el índice inicial y final de los elementos a mostrar en esta página
+        int startIndex = pageIndex * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, results.size());
+
+        
+
+        TableColumn<Medicamento, Integer> nroFila = new TableColumn<>("#");
+        TableColumn<Medicamento, String> nregistro = new TableColumn<>("Nº Registro");
+        TableColumn<Medicamento, String> nombre = new TableColumn<>("Nombre");
+        TableColumn<Medicamento, String> pactivos = new TableColumn<>("P. Activos");
+        TableColumn<Medicamento, String> labtitular = new TableColumn<>("Lab. Titular");
+
+        nroFila.setCellValueFactory(column -> new ReadOnlyObjectWrapper<>(startIndex + column.getTableView().getItems().indexOf(column.getValue()) + 1));
+        nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        nregistro.setCellValueFactory(new PropertyValueFactory<>("nregistro"));
+        pactivos.setCellValueFactory(new PropertyValueFactory<>("pactivos"));
+        labtitular.setCellValueFactory(new PropertyValueFactory<>("labtitular"));
+
+        medicamentosTabla.getColumns().addAll(nroFila, nombre, nregistro, pactivos, labtitular /*presentaciones*/);
+
+       
+        // Agregar los elementos correspondientes a la página actual
+        medicamentosTabla.setItems(FXCollections.observableArrayList(results.subList(startIndex, endIndex)));
+
+        return medicamentosTabla;
+    }
+    
+
     @FXML
     public void initialize() {
-       
+        searchField = new TextField();
+        
         TableColumn<Medicamento, Integer> nroFila = new TableColumn<>("#");
         TableColumn<Medicamento, String> nregistro = new TableColumn<>("Nº Registro");
         TableColumn<Medicamento, String> nombre = new TableColumn<>("Nombre");
@@ -77,11 +130,15 @@ public class PresentacionesController {
         
         
         nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        //TextFieldTableCell.forTableColumn() devuelve una celda de edición de texto, que es el tipo de celda que se 
+        //utilizará para la columna "Nombre". setEditable(true) permite que la columna sea editable.
+        nombre.setCellFactory(TextFieldTableCell.forTableColumn()); 
+        nombre.setEditable(true); //hace la celda editable
         nregistro.setCellValueFactory(new PropertyValueFactory<>("nregistro"));
         pactivos.setCellValueFactory(new PropertyValueFactory<>("pactivos"));
         labtitular.setCellValueFactory(new PropertyValueFactory<>("labtitular"));
 
-        /*// Crear una celda personalizada para la columna "Presentaciones" que muestre el TableView de presentaciones.
+        /* // Crear una celda personalizada para la columna "Presentaciones" que muestre el TableView de presentaciones.
         presentaciones.setCellFactory(column -> new TableCell<>() {
         @Override
         protected void updateItem(TableView<Presentaciones> item, boolean empty) {
@@ -93,9 +150,9 @@ public class PresentacionesController {
                 setGraphic(item);
             }
         }
-    });
+    }); */
 
-    presentaciones.setCellValueFactory(cellData -> {
+        /* presentaciones.setCellValueFactory(cellData -> {
         Medicamento medicamento = cellData.getValue();
         TableView<Presentaciones> presentacionesTableView = new TableView<>();
         TableColumn<Presentaciones, String> cn = new TableColumn<>("Cod. Nacional");
@@ -105,13 +162,26 @@ public class PresentacionesController {
         presentacionesTableView.setItems(FXCollections.observableArrayList(medicamento.getPresentaciones()));
 
         return new SimpleObjectProperty<>(presentacionesTableView);
-    }); */
+    }); */ 
         
         medicamentosTabla.getColumns().addAll(nroFila, nombre, nregistro, pactivos, labtitular /*presentaciones*/);
         this.medicamentosTabla.setItems(this.results);
 
-        this.psuministroTask = new PresentacionesTask(requestedMedicamento, this.results);
+        //medicamentosListView.setItems(results);
+
+        this.psuministroTask = new PresentacionesTask(requestedMedicamento, this.results, progressIndicator);
+        progressIndicator.progressProperty().bind(psuministroTask.progressProperty()); // vincula el progress indicator con el task
         new Thread(psuministroTask).start();
+
+        /* // Configurar el objeto Pagination
+        pagination.setPageFactory(this::createPage);
+        pagination.setPageCount((int) Math.ceil((double) results.size() / itemsPerPage));
+
+        // Actualizar la tabla cuando se cambie de página
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
+            medicamentosTabla.getItems().clear();
+            medicamentosTabla.setItems(FXCollections.observableArrayList(results.subList(newIndex.intValue() * itemsPerPage, Math.min(results.size(), (newIndex.intValue() + 1) * itemsPerPage))));
+        }); */
     }
 
     @FXML
@@ -125,6 +195,25 @@ public class PresentacionesController {
             deleteInput.clear();
             deleteInput.requestFocus();
         }
+        
+    }
+    @FXML
+    public void filterList(ActionEvent event) {
+
+        FilteredList<Medicamento> filteredData = new FilteredList<Medicamento>(results, p -> true);
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(medicamento -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+            String Filter = newValue.toUpperCase();
+                return medicamento.getNombre().toUpperCase().contains(Filter);
+            });
+        });
+        
+        medicamentosTabla.setItems(filteredData);
+        medicamentosTabla.refresh();
+    
     }
 
     @FXML

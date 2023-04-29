@@ -15,5 +15,7 @@ public class Medicamento {
     String nombre;
     String pactivos;
     String labtitular;
+    String cn;
+    String observ;
     //List<Presentaciones> presentaciones;
 }

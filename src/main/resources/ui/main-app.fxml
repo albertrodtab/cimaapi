@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="600.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="740.0" prefWidth="930.0">
          <children>
-            <VBox layoutX="8.0" prefHeight="442.0" prefWidth="577.0">
+            <VBox layoutX="8.0" prefHeight="740.0" prefWidth="930.0">
                <children>
                   <TextField fx:id="medicamentoInput" prefHeight="27.0" prefWidth="242.0" promptText="Nº Registro/Codigo Nacional" />
                   <HBox prefHeight="60.0" prefWidth="434.0">
@@ -22,7 +22,7 @@
                         <Button fx:id="btPresentaciones" layoutX="137.0" layoutY="10.0" mnemonicParsing="false" onAction="#searchPresentaciones" text="Presentaciones" />
                      </children>
                   </HBox>
-                  <TabPane fx:id="tpMedicamento" prefHeight="349.0" prefWidth="578.0" tabClosingPolicy="UNAVAILABLE" />
+                  <TabPane fx:id="tpMedicamento" prefHeight="650.0" prefWidth="578.0" tabClosingPolicy="UNAVAILABLE" />
                </children>
             </VBox>
          </children></AnchorPane>
