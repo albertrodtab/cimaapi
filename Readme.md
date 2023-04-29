@@ -9,9 +9,11 @@
 ###### Otras funcionalidades (1 pto cada una) 
 
 * Cargar algún tipo de contenido gráfico a partir de información dada por la API (una foto, por ejemplo).
+### Implementado
 * Permitir la exportación del contenido a un fichero CSV.
 * Implementar una funcionalidad que permite exportar algún listado (devuelto por alguna operación de la API) a un CSV y se comprima en zip (La idea es implementarlo usando CompletableFuture). Teneis aqui un tutorial sobre cómo comprimir en ZIP con Java 
 * Crea, utilizando WebFlux, un pequeño servicio web relacionado con la API seleccionada y consúmelo desde alguna zona de la aplicación JavaFX utilizando WebClient.
+### Implementado
 * Utiliza correctamente la clase ObservableList de JavaFX para la visualización de los contenidos en los diferentes controles de JavaFX que decidas utilizar (ComboBox, TableView, ListView, . . .).
 ### Implementado
 * Realizar el seguimiento del proyecto utilizando la plataforma GitHub para almacenar el código y gestionando las issues (bug, mejoras, . . .) a medida que se vaya trabajando en él.
