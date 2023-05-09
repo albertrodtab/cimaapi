@@ -1,20 +1,31 @@
 package com.alberto.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.alberto.model.Medicamento;
 import com.alberto.task.PresentacionesTask;
 import com.opencsv.CSVWriter;
+
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
@@ -23,8 +34,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
 
 public class PresentacionesController {
     
@@ -257,7 +270,7 @@ public class PresentacionesController {
     public void clearTabla(ActionEvent event) {
         results.clear();
     }
-
+/* 
     @FXML
     public void exportCSV(ActionEvent event) {
         File outputFile = new File(System.getProperty("user.dir") + System.getProperty("file.separator")
@@ -278,5 +291,91 @@ public class PresentacionesController {
             }catch (IOException e){
                 e.printStackTrace();
         }
+    } */
+
+    @FXML
+    public void exportCSV(ActionEvent event) {
+        String baseFileName = requestedMedicamento + "_presentaciones";
+        File outputFile = new File("src/main/exportaciones/" + baseFileName + ".csv");
+    
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(10000); // Agregar retraso de 10 segundos
+    
+                // Nombre del archivo CSV
+                int i = 1;
+                String csvFileName = baseFileName + ".csv";
+                while (new File("src/main/exportaciones/" + csvFileName).exists()) {
+                    csvFileName = baseFileName + "_" + i + ".csv";
+                    i++;
+                }
+    
+                // Archivo CSV
+                File csvFile = new File("src/main/exportaciones/" + csvFileName);
+                FileWriter writer = new FileWriter(csvFile);
+                CSVWriter csvWriter = new CSVWriter(writer);
+                List<String[]> data = new ArrayList<String[]>();
+                for (Medicamento medicamento : results) {
+                    String anotaciones = anotacionesMap.getOrDefault(medicamento, "");
+                    String[] row = {medicamento.getNombre(), medicamento.getNregistro(), medicamento.getPactivos(), anotaciones};
+                    data.add(row);
+                }
+                csvWriter.writeAll(data);
+                csvWriter.close();
+    
+                // Nombre del archivo ZIP
+                i = 1;
+                String zipFileName = baseFileName + ".zip";
+                while (new File("src/main/exportaciones/" + zipFileName).exists()) {
+                    zipFileName = baseFileName + "_" + i + ".zip";
+                    i++;
+                }
+    
+                // Archivo ZIP
+                FileOutputStream fos = new FileOutputStream("src/main/exportaciones/" + zipFileName);
+                ZipOutputStream zipOut = new ZipOutputStream(fos);
+    
+                // Archivo CSV
+                FileInputStream fis = new FileInputStream(csvFile);
+                ZipEntry zipEntry = new ZipEntry(csvFile.getName());
+                zipOut.putNextEntry(zipEntry);
+    
+                byte[] bytes = new byte[1024];
+                int length;
+                while ((length = fis.read(bytes)) >= 0) {
+                    zipOut.write(bytes, 0, length);
+                }
+    
+                zipOut.close();
+                fis.close();
+                fos.close();
+    
+                return csvFile;
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }).thenAcceptAsync((File csvFile) -> {
+    
+            if(csvFile != null){
+                // Mensaje de alerta
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Exportación exitosa");
+                    alert.setHeaderText(null);
+                    alert.setContentText("El archivo se ha exportado con éxito en formato ZIP.");
+                    alert.showAndWait();
+                });
+            }else{
+                // Mensaje de alerta de error
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error al exportar archivo");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Ocurrió un error al exportar el archivo. Por favor, inténtalo de nuevo.");
+                    alert.showAndWait();
+                });
+            }
+        });
     }
 }

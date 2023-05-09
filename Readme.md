@@ -11,6 +11,7 @@
 * Cargar algún tipo de contenido gráfico a partir de información dada por la API (una foto, por ejemplo).
 ### Implementado
 * Permitir la exportación del contenido a un fichero CSV.
+### Implementado para la exportación del endpoint de presentaciones
 * Implementar una funcionalidad que permite exportar algún listado (devuelto por alguna operación de la API) a un CSV y se comprima en zip (La idea es implementarlo usando CompletableFuture). Teneis aqui un tutorial sobre cómo comprimir en ZIP con Java 
 * Crea, utilizando WebFlux, un pequeño servicio web relacionado con la API seleccionada y consúmelo desde alguna zona de la aplicación JavaFX utilizando WebClient.
 ### Implementado
